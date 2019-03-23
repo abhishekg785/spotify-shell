@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+showCommands() {
+    echo "Available commands: ";
+    echo;
+    echo "next                                  # Plays the next song in the playlisplayer$plat";
+    echo "prev                                  # Plays the previous song in the playlist";
+    echo "play                                  # Play the song";
+    echo "pause                                 # Pause the song";
+    echo "replay                                # Replay the current song";
+    echo;
+    echo "quit                                  # Quits Spotify";
+    echo "open                                  # Opens spotify app";
+}
+
+argsCount=$#
+
+# show the commands
+if [[ $argsCount == 0 ]]; then
+  showCommands;
+fi
+
+
+while [ $argsCount -gt 0 ]; do
+  arg=$1;
+
+  case $arg in
+    "next" )
+      echo "Playing next track"
+      osascript -e 'tell application "Spotify" to next track';
+      break ;;
+
+    "prev" )
+      echo "Playing previous track"
+      osascript -e 'tell application "Spotify" to previous track';
+      break ;;
+
+    "play" )
+      playerState=`osascript -e 'tell application "Spotify" to player state as string'`
+      if [[ $playerState == "paused" ]]; then
+        echo "Playing!"
+        osascript -e 'tell application "Spotify" to playpause';
+      fi
+      break ;;
+
+    "pause" )
+      osascript -e 'tell application "Spotify" to pause track';
+      echo "Paused!"
+      break ;;
+
+    "replay" )
+      echo "Replaying the current track";
+      osascript -e 'tell application "Spotify" to set player position to 0'
+      break ;;
+
+    "quit" )
+      echo "Quitting Spotify";
+      osascript -e 'tell application "Spotify" to quit';
+      break ;;
+
+    "open" )
+      echo "Opening Spotify";
+      open -a "Spotify";
+      break ;;
+  esac
+done

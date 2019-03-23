@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# let's install the script for you :)
+CURRENT_SHELL_NAME=$(basename "${SHELL}")
+SCRIPT_DIR=$( cd "$( dirname "${BASH_PROFILE[0]}" )" && pwd )
+SPOTIFY_SHELL_PATH="${SCRIPT_DIR}/scripts"
+
+if [[ ":${PATH}:" == *":${SPOTIFY_SHELL_PATH}:"* ]]; then
+  echo "Spotify shell path ( ${SPOTIFY_SHELL_PATH} ) already exists in your paths."
+  exit 0
+fi
+
+if [[ "${CURRENT_SHELL_NAME}" == "bash" ]]; then
+  echo "Bash detected. Saving SPOTIFY script to ~/.bash_profile"
+  echo "export PATH=\$PATH$:${SPOTIFY_SHELL_PATH}" >> ~/.bash_profile
+elif [[ "${CURRENT_SHELL_NAME}" == "zsh" ]]; then
+  echo "ZSH shell detected. Saving SPOTIFY script to ~/.zshrc"
+  echo "export PATH=\$PATH:${SPOTIFY_SHELL_PATH}" >> ~/.zshrc
+fi
+
+echo "Done! Open a new terminal window and start using :)"
